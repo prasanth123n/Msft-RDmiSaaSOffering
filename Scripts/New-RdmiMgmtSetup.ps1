@@ -97,7 +97,7 @@ Param(
 try
 {
     Invoke-WebRequest -Uri $fileURI -OutFile "C:\msft-rdmi-saas-offering.zip"
-    New-Item -Path "C:\msft-rdmi-saas-offering.zip" -ItemType directory -Force -ErrorAction SilentlyContinue
+    New-Item -Path "C:\msft-rdmi-saas-offering" -ItemType directory -Force -ErrorAction SilentlyContinue
     Expand-Archive "C:\msft-rdmi-saas-offering.zip" -DestinationPath "C:\msft-rdmi-saas-offering" -ErrorAction SilentlyContinue
     $SecurePass=ConvertTo-SecureString -String $vmPassword -AsPlainText -Force
     $localcred=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($vmUsername, $Securepass)
