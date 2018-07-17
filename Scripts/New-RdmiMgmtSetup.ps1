@@ -53,7 +53,27 @@ Param(
 
     [Parameter(Mandatory = $True)]
     [ValidateNotNullOrEmpty()]
-    [string] $CodeBitPath,
+    [string] $vmUsername,
+
+    [Parameter(Mandatory = $True)]
+    [ValidateNotNullOrEmpty()]
+    [string] $vmPassword,
+
+    [Parameter(Mandatory = $True)]
+    [ValidateNotNullOrEmpty()]
+    [string] $Username,
+
+    [Parameter(Mandatory = $True)]
+    [ValidateNotNullOrEmpty()]
+    [string] $Password,
+
+    [Parameter(Mandatory=$false)]
+    [ValidateNotNullOrEmpty()]
+    [string] $fileURI,
+
+    [Parameter(Mandatory = $False)]
+    [ValidateNotNullOrEmpty()]
+    [string] $CodeBitPath= "C:\msft-rdmi-saas-offering\msft-rdmi-saas-offering",
    
     [Parameter(Mandatory = $False)]
     [ValidateNotNullOrEmpty()]
@@ -73,7 +93,21 @@ Param(
    
       
 )
-       
+
+try
+{
+    Invoke-WebRequest -Uri $fileURI -OutFile "C:\msft-rdmi-saas-offering.zip"
+    New-Item -Path "C:\msft-rdmi-saas-offering.zip" -ItemType directory -Force -ErrorAction SilentlyContinue
+    Expand-Archive "C:\msft-rdmi-saas-offering.zip" -DestinationPath "C:\msft-rdmi-saas-offering" -ErrorAction SilentlyContinue
+    $SecurePass=ConvertTo-SecureString -String $vmPassword -AsPlainText -Force
+    $localcred=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($vmUsername, $Securepass)
+    Invoke-Command -ComputerName localhost -Credential $localcred -ScriptBlock{
+    param($SubscriptionId,$Username,$Password,$ResourceGroupName)}
+}
+catch [Exception]
+{
+    Write-Output $_.Exception.Message
+} 
 try
 {
         Write-Output "Checking if AzureRm module is installed.."
