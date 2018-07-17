@@ -96,20 +96,15 @@ Param(
 
 try
 {
-    Invoke-WebRequest -Uri $fileURI -OutFile "C:\msft-rdmi-saas-offering.zip"
-    New-Item -Path "C:\msft-rdmi-saas-offering" -ItemType directory -Force -ErrorAction SilentlyContinue
-    Expand-Archive "C:\msft-rdmi-saas-offering.zip" -DestinationPath "C:\msft-rdmi-saas-offering" -ErrorAction SilentlyContinue
-    $SecurePass=ConvertTo-SecureString -String $vmPassword -AsPlainText -Force
-    $localcred=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($vmUsername, $Securepass)
-    Invoke-Command -ComputerName localhost -Credential $localcred -ScriptBlock{
-    param($SubscriptionId,$Username,$Password,$ResourceGroupName)}
-}
-catch [Exception]
-{
-    Write-Output $_.Exception.Message
-} 
-try
-{
+        Invoke-WebRequest -Uri $fileURI -OutFile "C:\msft-rdmi-saas-offering.zip"
+        New-Item -Path "C:\msft-rdmi-saas-offering" -ItemType directory -Force -ErrorAction SilentlyContinue
+        Expand-Archive "C:\msft-rdmi-saas-offering.zip" -DestinationPath "C:\msft-rdmi-saas-offering" -ErrorAction SilentlyContinue
+        $SecurePass=ConvertTo-SecureString -String $vmPassword -AsPlainText -Force
+        $localcred=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($vmUsername, $Securepass)
+        Invoke-Command -ComputerName localhost -Credential $localcred -ScriptBlock{
+        param($SubscriptionId,$Username,$Password,$ResourceGroupName)}
+
+
         Write-Output "Checking if AzureRm module is installed.."
         $azureRmModule = Get-Module AzureRM -ListAvailable | Select-Object -Property Name -ErrorAction SilentlyContinue
         if (!$azureRmModule.Name) {
