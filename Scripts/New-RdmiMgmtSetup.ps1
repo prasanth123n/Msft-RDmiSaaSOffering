@@ -114,7 +114,7 @@ try
     
     $Psswd = $Password | ConvertTo-SecureString -asPlainText -Force
     $Credential = New-Object System.Management.Automation.PSCredential($UserName,$Psswd)
-    Login-AzureRmAccount $Credential
+    Login-AzureRmAccount -Credential $Credential
 
     Write-Output "Selecting Azure Subscription.."
     Select-AzureRmSubscription -SubscriptionId $SubscriptionId
