@@ -51,6 +51,14 @@ Param(
     [ValidateNotNullOrEmpty()]
     [string] $ResourceURL,
 
+    [Parameter(Mandatory = $True)]
+    [ValidateNotNullOrEmpty()]
+    [string] $UserName,
+
+    [Parameter(Mandatory = $True)]
+    [ValidateNotNullOrEmpty()]
+    [string] $Password,
+
     [Parameter(Mandatory=$False)]
     [ValidateNotNullOrEmpty()]
     [string] $fileURI,
@@ -101,6 +109,12 @@ try
 
     Write-Output "Importing AzureRm Module.."
     Import-Module AzureRm -ErrorAction SilentlyContinue -Force
+
+    Write-Output "Login Into Azure RM.."
+    
+    $Psswd = $Password | ConvertTo-SecureString -asPlainText -Force
+    $Credential = New-Object System.Management.Automation.PSCredential($UserName,$Psswd)
+    Login-AzureRmAccount $Credential
 
     Write-Output "Selecting Azure Subscription.."
     Select-AzureRmSubscription -SubscriptionId $SubscriptionId
