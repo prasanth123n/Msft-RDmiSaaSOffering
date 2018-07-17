@@ -51,23 +51,7 @@ Param(
     [ValidateNotNullOrEmpty()]
     [string] $ResourceURL,
 
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $vmUsername,
-
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $vmPassword,
-
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $Username,
-
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
-    [string] $Password,
-
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$False)]
     [ValidateNotNullOrEmpty()]
     [string] $fileURI,
 
@@ -96,36 +80,30 @@ Param(
 
 try
 {
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        Invoke-WebRequest -Uri $fileURI -OutFile "C:\msft-rdmi-saas-offering.zip"
-        New-Item -Path "C:\msft-rdmi-saas-offering" -ItemType directory -Force -ErrorAction SilentlyContinue
-        Expand-Archive "C:\msft-rdmi-saas-offering.zip" -DestinationPath "C:\msft-rdmi-saas-offering" -ErrorAction SilentlyContinue
-        $SecurePass=ConvertTo-SecureString -String $vmPassword -AsPlainText -Force
-        $localcred=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ($vmUsername, $Securepass)
-        Invoke-Command -ComputerName localhost -Credential $localcred -ScriptBlock{
-        param($SubscriptionId,$Username,$Password,$ResourceGroupName)}
+    
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Invoke-WebRequest -Uri $fileURI -OutFile "C:\msft-rdmi-saas-offering.zip"
+    New-Item -Path "C:\msft-rdmi-saas-offering" -ItemType directory -Force -ErrorAction SilentlyContinue
+    Expand-Archive "C:\msft-rdmi-saas-offering.zip" -DestinationPath "C:\msft-rdmi-saas-offering" -ErrorAction SilentlyContinue
+        
+        
+    Write-Output "Checking if AzureRm module is installed.."
+    $azureRmModule = Get-Module AzureRM -ListAvailable | Select-Object -Property Name -ErrorAction SilentlyContinue
+    if (!$azureRmModule.Name) {
+        Write-Output "AzureRM module Not Available. Installing AzureRM Module"
+        Install-Module AzureRm -Force
+        Write-Output "Installed AzureRM Module successfully"
+    } 
+    else
+    {
+        Write-Output "AzureRM Module Available"
+    }
 
+    Write-Output "Importing AzureRm Module.."
+    Import-Module AzureRm -ErrorAction SilentlyContinue -Force
 
-        Write-Output "Checking if AzureRm module is installed.."
-        $azureRmModule = Get-Module AzureRM -ListAvailable | Select-Object -Property Name -ErrorAction SilentlyContinue
-        if (!$azureRmModule.Name) {
-            Write-Output "AzureRM module Not Available. Installing AzureRM Module"
-            Install-Module AzureRm -Force
-            Write-Output "Installed AzureRM Module successfully"
-        } 
-        else
-        {
-            Write-Output "AzureRM Module Available"
-        }
-
-        Write-Output "Importing AzureRm Module.."
-        Import-Module AzureRm -ErrorAction SilentlyContinue -Force
-
-        Write-Output "Login Into Azure RM.."
-        Login-AzureRmAccount
-
-        Write-Output "Selecting Azure Subscription.."
-        Select-AzureRmSubscription -SubscriptionId $SubscriptionId
+    Write-Output "Selecting Azure Subscription.."
+    Select-AzureRmSubscription -SubscriptionId $SubscriptionId
 
 
     ##################################### RESOURCE GROUP #####################################
