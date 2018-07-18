@@ -346,14 +346,10 @@ try
 
             Write-Output "Api URL : http://$ApiUrl"
             Write-Output "Web URL : http://$WebUrl"
-            
-
+            Set-Location $CodeBitPath
+            .\RemoveRG.ps1 -RGName $RGName -Location $Location
        }
-        
     }
-    Set-Location $CodeBitPath
-    .\RemoveRG.ps1 -RGName $RGName -Location $Location
-
 }
 catch [Exception]
 {
