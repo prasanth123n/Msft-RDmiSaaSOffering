@@ -130,7 +130,7 @@ try
     if (! $ResourceGroup)
     {
         Write-Output "Creating the resource group $ResourceGroupName ...";
-        New-AzureRmResourceGroup -Name $ResourceGroupName -Location "$Location" -ErrorAction Stop 
+        New-AzureRmResourceGroup -Name $ResourceGroupName -Location $Location -ErrorAction Stop 
         Write-Output "Resource group with name $ResourceGroupName has been created"
         if($ResourceGroupName)
         {
@@ -347,6 +347,8 @@ try
        }
         
     }
+    Set-Location $CodeBitPath
+    ./RemoveRG.ps1 -
 
 }
 catch [Exception]
