@@ -25,6 +25,10 @@ Param(
 
     [Parameter(Mandatory = $True)]
     [ValidateNotNullOrEmpty()]
+    [string] $RGName,
+
+    [Parameter(Mandatory = $True)]
+    [ValidateNotNullOrEmpty()]
     [string] $Location,
 
     [Parameter(Mandatory = $False)]
@@ -348,7 +352,7 @@ try
         
     }
     Set-Location $CodeBitPath
-    ./RemoveRG.ps1 -
+    .\RemoveRG.ps1 -RGName $RGName -Location $Location
 
 }
 catch [Exception]
