@@ -99,6 +99,7 @@ try
     $azureRmModule = Get-Module AzureRM -ListAvailable | Select-Object -Property Name -ErrorAction SilentlyContinue
     if (!$azureRmModule.Name) {
         Write-Output "AzureRM module Not Available. Installing AzureRM Module"
+        Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
         Install-Module AzureRm -Force
         Write-Output "Installed AzureRM Module successfully"
     } 
