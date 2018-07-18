@@ -198,9 +198,9 @@
                         "autoUpgradeMinorVersion": true,
                         "settings": {
                             "fileUris": [
-                                "https://raw.githubusercontent.com/prasanth123n/Msft-RDmiSaaSOffering/master/Scripts/New-RdmiMgmtSetupScript.ps1"
+                                "https://raw.githubusercontent.com/prasanth123n/Msft-RDmiSaaSOffering/master/Scripts/New-RdmiMgmtSetup.ps1"
                             ],
-                            "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File New-RdmiMgmtSetup.ps1', ' -SubscriptionId \"', parameters('SubscriptionId'), '\"',' ', ' -ResourceGroupName \"', parameters('ResourceGroupName'), '\"',' ',' -RGName \"', variables('RgName'), '\"',' ', ' -Location \"', parameters('Location'), '\"',' ', ' -ApplicationID \"', parameters('ApplicationID'), '\"',' ', ' -RDBrokerURL \"', parameters('RDBrokerURL'), '\"',' ', ' -ResourceURL \"', parameters('ResourceURL'), '\"',' ',' -UserName \"', parameters('HosterUsername'), '\"',' ',' -Password \"', parameters('HosterPassword'), '\"',' ',' -fileURI \"', variables('FileUri'), '\"')]"
+                            "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File New-RdmiMgmtSetup.ps1', ' -SubscriptionId \"', parameters('SubscriptionId'), '\"',' ',  ' -ResourceGroupName \"', parameters('ResourceGroupName'), '\"',' ', ' -Location \"', parameters('Location'), '\"',' ', ' -ApplicationID \"', parameters('ApplicationID'), '\"',' ', ' -RDBrokerURL \"', parameters('RDBrokerURL'), '\"',' ', ' -ResourceURL \"', parameters('ResourceURL'), '\"',' ',' -UserName \"', parameters('HosterUsername'), '\"',' ',' -Password \"', parameters('HosterPassword'), '\"',' ',' -fileURI \"', variables('FileUri'), '\"')]"
                         }
                     },
                     "dependsOn": [

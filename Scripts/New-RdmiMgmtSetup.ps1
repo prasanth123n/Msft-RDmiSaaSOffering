@@ -25,10 +25,6 @@ Param(
 
     [Parameter(Mandatory = $True)]
     [ValidateNotNullOrEmpty()]
-    [string] $RGName,
-
-    [Parameter(Mandatory = $True)]
-    [ValidateNotNullOrEmpty()]
     [string] $Location,
 
     [Parameter(Mandatory = $False)]
@@ -134,7 +130,7 @@ try
     if (! $ResourceGroup)
     {
         Write-Output "Creating the resource group $ResourceGroupName ...";
-        New-AzureRmResourceGroup -Name $ResourceGroupName -Location $Location -ErrorAction Stop 
+        New-AzureRmResourceGroup -Name $ResourceGroupName -Location "$Location" -ErrorAction Stop 
         Write-Output "Resource group with name $ResourceGroupName has been created"
         if($ResourceGroupName)
         {
@@ -346,10 +342,12 @@ try
 
             Write-Output "Api URL : http://$ApiUrl"
             Write-Output "Web URL : http://$WebUrl"
-            Set-Location $CodeBitPath
-            .\RemoveRG.ps1 -RGName $RGName -Location $Location
+            
+
        }
+        
     }
+
 }
 catch [Exception]
 {
