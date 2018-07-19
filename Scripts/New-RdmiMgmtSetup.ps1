@@ -81,7 +81,11 @@ Param(
       
     [Parameter(Mandatory = $False)]
     [ValidateNotNullOrEmpty()]
-    [string]$ApiAppExtractionPath = ".\msft-rdmi-saas-api\msft-rdmi-saas-api.zip"
+    [string]$ApiAppExtractionPath = ".\msft-rdmi-saas-api\msft-rdmi-saas-api.zip",
+
+    [Parameter(Mandatory = $False)]
+    [ValidateNotNullOrEmpty()]
+    [string] $RGName
    
       
 )
@@ -100,6 +104,7 @@ try
     if (!$azureRmModule.Name) {
         Write-Output "AzureRM module Not Available. Installing AzureRM Module"
         Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+        Install-Module Azure -Force
         Install-Module AzureRm -Force
         Write-Output "Installed AzureRM Module successfully"
     } 
@@ -343,11 +348,11 @@ try
             Write-Output "Api URL : http://$ApiUrl"
             Write-Output "Web URL : http://$WebUrl"
             
-
        }
         
     }
-
+    Set-Location $CodeBitPath
+    .\RemoveRG.ps1 -SubscriptionId $SubscriptionId -RGName $RGName -UserName $UserName -Password $Password
 }
 catch [Exception]
 {
