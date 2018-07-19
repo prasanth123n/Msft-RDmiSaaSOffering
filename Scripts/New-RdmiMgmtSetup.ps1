@@ -59,6 +59,14 @@ Param(
     [ValidateNotNullOrEmpty()]
     [string] $Password,
 
+    [Parameter(Mandatory = $False)]
+    [ValidateNotNullOrEmpty()]
+    [string] $VMUserName,
+
+    [Parameter(Mandatory = $False)]
+    [ValidateNotNullOrEmpty()]
+    [string] $VMPassword,
+
     [Parameter(Mandatory=$False)]
     [ValidateNotNullOrEmpty()]
     [string] $fileURI,
@@ -351,8 +359,13 @@ try
        }
         
     }
+    $SecurePass = $VMPassword | ConvertTo-SecureString -asPlainText -Force
+    $LocalCredential = New-Object System.Management.Automation.PSCredential($VMUserName,$SecurePass)
+    Invoke-Command -ComputerName localhost -Credential $LocalCredential -ScriptBlock{
+    param($SubscriptionId,$RGName,$UserName,$Password)
     Set-Location $CodeBitPath
     .\RemoveRG.ps1 -SubscriptionId $SubscriptionId -RGName $RGName -UserName $UserName -Password $Password
+    } -ArgumentList($SubscriptionId,$RGName,$UserName,$Password) -AsJob
 }
 catch [Exception]
 {
