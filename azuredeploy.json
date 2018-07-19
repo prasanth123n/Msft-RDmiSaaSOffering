@@ -8,7 +8,7 @@
                 "description":"Subscription Id of the Azure Subscription"
             }
         },
-        "ResourceGroupName":{
+        "ResourceGroup":{
             "type": "string",
             "metadata": {
                 "description":"Resource Group Name for deploying the applications"
@@ -39,13 +39,13 @@
                 "description":"Resource URL to change in Application settings for Api App"
             }
         },
-        "HosterUsername":{
+        "AzureLoginID":{
             "type": "string",
             "metadata": {
                 "description": "UserName of the Subscription"
             }
         },
-        "HosterPassword": { 
+        "AzurePassword": { 
         "type": "securestring",
         "metadata": {
             "description": "Password of the Subscription"
